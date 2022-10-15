@@ -18,8 +18,8 @@ public enum CalculatorComponents
     Equal,
     [Description(".")]
     DecimalPoint,
-    [Description("%")]
-    Modulus,
+    [Description("√")]
+    SquareRoot,
     [Description("x²")]
     Exponential,
     [Description("7")]
@@ -42,7 +42,10 @@ public enum CalculatorComponents
     Three,
     [Description("0")]
     Zero,
-  
 
+}
 
+public enum RoundPlaces
+{
+    Default = 5
 }
