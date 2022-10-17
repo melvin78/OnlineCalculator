@@ -738,3 +738,17 @@ video {
     --tw-text-opacity: 1;
     color: rgb(59 130 246 / var(--tw-text-opacity));
 }
+
+.flex-col {
+    flex-direction: column;
+}
+
+.py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
