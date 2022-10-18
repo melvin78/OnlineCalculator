@@ -752,3 +752,7 @@ video {
     font-size: 1.875rem;
     line-height: 2.25rem;
 }
+
+.break-words{
+    overflow-wrap: break-word;
+}
