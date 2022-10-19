@@ -1,12 +1,41 @@
 ﻿@using OnlineCalculator.Extensions
 @using OnlineCalculator.Constants
+@using System.Globalization
+@implements IDisposable
+@inject CalculatorScreenValueContainer CalculatorScreenValueContainer
+@inject CalculationAnswerContainer CalculationAnswerContainer
+
 <div class="w-2/4 border-r border-indigo-400">
-    <button class="w-full h-16 outline-none focus:outline-none bg-indigo-700 bg-opacity-30 hover:bg-opacity-40 text-white text-xl font-light">
+    <button  @onclick="() => ComputeAnswer()" class="w-full h-16 outline-none focus:outline-none bg-indigo-700 bg-opacity-30 hover:bg-opacity-40 text-white text-xl font-light">
         @EnumerationUtility.GetEnumDescription(CalculatorComponents.Equal)
     </button>
 </div>
 
 
 @code {
+    [Parameter]
+    public string? Content { get; set; }
     
+    protected override void OnInitialized()
+    {
+        CalculatorScreenValueContainer.OnChange += StateHasChanged;
+    }
+
+    private void ChangeScreenValue(string content)
+    {
+        CalculatorScreenValueContainer.Property = content;
+
+    }
+
+    private void ComputeAnswer()
+    {
+        
+        CalculationAnswerContainer.Property = CalculatorScreenValueContainer.Property.GetAnswer().ToString(CultureInfo.InvariantCulture);
+
+    }
+
+    public void Dispose()
+    {
+        CalculatorScreenValueContainer.OnChange -= StateHasChanged;
+    }
 }

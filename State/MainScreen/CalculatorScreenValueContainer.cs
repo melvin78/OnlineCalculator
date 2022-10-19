@@ -7,7 +7,7 @@ public class CalculatorScreenValueContainer
 {
     
     private string? ScreenValue;
-
+    
     public string Property
     {
         get => ScreenValue ?? string.Empty;

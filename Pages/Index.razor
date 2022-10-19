@@ -3,6 +3,7 @@
 @using OnlineCalculator.Extensions
 @implements IDisposable
 @inject CalculatorScreenValueContainer CalculatorScreenValueContainer
+@inject CalculationAnswerContainer CalculationAnswerContainer
 
 <PageTitle>Math - Calculator</PageTitle>
 
@@ -12,7 +13,7 @@
     <div class="w-full mx-auto rounded-xl bg-gray-100 shadow-xl text-gray-800 relative overflow-hidden" style="max-width:300px">
         <div class="w-full h-40 bg-gradient-to-b from-gray-800 to-gray-700 flex flex-col text-right">
             <div style="overflow-y: auto; scrollbar-width: thin;" class="w-full py-3 px-6 text-3xl text-white font-thin break-words">@CalculatorScreenValueContainer.Property</div>
-            <div class="w-full py-2 px-6 text-6xl text-white font-thin">340.0</div>
+            <div class="w-full py-2 px-6 text-6xl text-white font-thin">@CalculationAnswerContainer.Property</div>
         </div>
         <div class="w-full bg-gradient-to-b from-indigo-400 to-indigo-500">
             <div class="flex w-full">
@@ -52,11 +53,13 @@
     protected override void OnInitialized()
     {
         CalculatorScreenValueContainer.OnChange += StateHasChanged;
+        CalculationAnswerContainer.OnChange += StateHasChanged;
     }
     
 
     public void Dispose()
     {
         CalculatorScreenValueContainer.OnChange -= StateHasChanged;
+        CalculationAnswerContainer.OnChange -= StateHasChanged;
     }
 }

@@ -49,3 +49,11 @@ public enum RoundPlaces
 {
     Default = 5
 }
+
+public enum RegexValue
+{
+    LeftValue = 1,
+    RightValue = 2,
+    Symbol = 3
+    
+}

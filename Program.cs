@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CalculatorScreenValueContainer>();
+builder.Services.AddScoped<CalculationAnswerContainer>();
 builder.Services.AddFluxor(o =>
 
 {
