@@ -28,7 +28,10 @@
 
         if (CalculatorScreenValueContainer.Property.Length >= 3)
         {
-            CalculationAnswerContainer.Property = CalculatorScreenValueContainer.Property.GetAnswer().ToString(CultureInfo.InvariantCulture);
+            CalculationAnswerContainer.Property =
+                string.IsNullOrEmpty(CalculationAnswerContainer.Property) ? 
+                    CalculatorScreenValueContainer.Property.GetAnswer(0).ToString() : 
+                    CalculatorScreenValueContainer.Property.GetAnswer(decimal.Parse(CalculationAnswerContainer.Property)).ToString();
         }
       
         

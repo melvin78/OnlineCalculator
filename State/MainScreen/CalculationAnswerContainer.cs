@@ -4,12 +4,12 @@ public class CalculationAnswerContainer
 {
     private string? Answer;
     
-    public string Property
+    public string? Property
     {
         get => Answer ?? string.Empty;
         set
         {
-            Answer += value;
+            Answer = value;
             NotifyStateChanged();
         }
     }

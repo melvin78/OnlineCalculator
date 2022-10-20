@@ -29,9 +29,8 @@
 
     private void ComputeAnswer()
     {
-        
-        CalculationAnswerContainer.Property = CalculatorScreenValueContainer.Property.GetAnswer().ToString(CultureInfo.InvariantCulture);
-
+        if (CalculationAnswerContainer.Property != null) 
+            CalculationAnswerContainer.Property = CalculatorScreenValueContainer.Property.GetAnswer(decimal.Parse(CalculationAnswerContainer.Property)).ToString();
     }
 
     public void Dispose()
