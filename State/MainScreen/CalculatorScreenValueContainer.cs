@@ -13,7 +13,7 @@ public class CalculatorScreenValueContainer
         get => ScreenValue ?? string.Empty;
         set
         {
-            ScreenValue += value;
+            ScreenValue = value;
             NotifyStateChanged();
         }
     }

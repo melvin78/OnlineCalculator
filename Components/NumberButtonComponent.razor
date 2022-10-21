@@ -21,22 +21,13 @@
     private void ChangeScreenValue(string content)
     {
         
-        CalculatorScreenValueContainer.Property = content;
+        CalculatorScreenValueContainer.Property += content;
 
-        var x = CalculatorScreenValueContainer.Property.Length;
-        var y = x;
-
-        if (CalculatorScreenValueContainer.Property.Length >= 3)
-        {
-            CalculationAnswerContainer.Property =
-                string.IsNullOrEmpty(CalculationAnswerContainer.Property) ? 
-                    CalculatorScreenValueContainer.Property.GetAnswer(0).ToString() : 
+        CalculationAnswerContainer.Property =
+            string.IsNullOrEmpty(CalculationAnswerContainer.Property) ?
+                    CalculatorScreenValueContainer.Property.GetAnswer(0).ToString() :
                     CalculatorScreenValueContainer.Property.GetAnswer(decimal.Parse(CalculationAnswerContainer.Property)).ToString();
-        }
-      
-        
-        
-        // if(CalculatorScreenValueContainer.Property.Split(new char))
+       
 
     }
 
