@@ -40,6 +40,12 @@ public  static class CalculatorService
      
 
         string defaultPattern = @"([+-]?\d*\.?\d+)+([-+⨉*÷x²])+([+-]?\d+\.?\d*)";
+
+        var cc = screenValue.Length;
+
+        var tt = Validator.IsPrime(screenValue.Length);
+
+        var yui = tt;
         
          var finalScreenValue = string.Empty;
 
@@ -52,7 +58,7 @@ public  static class CalculatorService
                  var p = x.ToString();
                  var y = z.ToString();
 
-                 if (Validator.IsPrime(screenValue.Length))
+                 if (screenValue.Length % 2 > 0)
                  {
                      finalScreenValue = $"{finalResult.ToString()}{screenValue[^2]}{screenValue[^1]}";
                      
