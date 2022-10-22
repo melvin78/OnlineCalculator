@@ -10,6 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CalculatorScreenValueContainer>();
 builder.Services.AddScoped<CalculationAnswerContainer>();
+builder.Services.AddScoped<CalculationDoneBeforeContainer>();
 builder.Services.AddFluxor(o =>
 
 {

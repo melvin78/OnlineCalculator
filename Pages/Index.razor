@@ -4,6 +4,7 @@
 @implements IDisposable
 @inject CalculatorScreenValueContainer CalculatorScreenValueContainer
 @inject CalculationAnswerContainer CalculationAnswerContainer
+@inject CalculationDoneBeforeContainer CalculationDoneBeforeContainer
 
 <PageTitle>Math - Calculator</PageTitle>
 
@@ -52,8 +53,15 @@
 @code {
     protected override void OnInitialized()
     {
+
         CalculatorScreenValueContainer.OnChange += StateHasChanged;
         CalculationAnswerContainer.OnChange += StateHasChanged;
+        CalculationAnswerContainer.OnChange += CalculationHasBeenDoneBefore;
+    }
+
+    private void CalculationHasBeenDoneBefore()
+    {
+        CalculationDoneBeforeContainer.Property = true;
     }
     
 
@@ -61,5 +69,6 @@
     {
         CalculatorScreenValueContainer.OnChange -= StateHasChanged;
         CalculationAnswerContainer.OnChange -= StateHasChanged;
+        CalculationAnswerContainer.OnChange -= CalculationHasBeenDoneBefore;
     }
 }
