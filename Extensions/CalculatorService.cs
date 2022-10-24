@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using OnlineCalculator.Constants;
+using OnlineCalculator.Model;
+using OnlineCalculator.State.MainScreen;
 
 namespace OnlineCalculator.Extensions;
 
@@ -36,7 +38,7 @@ public  static class CalculatorService
         return (decimal)Math.Round(Math.Pow((double)valueOne,2), (int) RoundPlaces.Default);
     }
 
-    public static decimal? GetAnswer(this string screenValue)
+    public static ScreenContentModel GetAnswer(this string screenValue)
     {
 
         decimal? finalResult = null;
@@ -62,26 +64,62 @@ public  static class CalculatorService
 
         }
 
-        return finalResult;
+        return new ScreenContentModel()
+        {
+            Value = finalResult,
+            ValidExpression = true
+        };
 
     }
 
 
-    public static decimal GetSuccessiveAnswers(this string screenValue, decimal screenResult)
+    public static ScreenContentModel GetSuccessiveAnswers(this string screenValue, decimal screenResult, List<decimal> successiveResults)
     {
         string secondaryPattern = @".*([-+⨉*÷x²])+([+-]?\d+\.?\d*).*";
         
+        string defaultPattern = @"^([+-]?\d*\.?\d+)+([-+⨉*÷x²])+([+-]?\d+\.?\d*)$";
+
+
         decimal finalResult = 0;
 
         string[] operators =  {"-","+","⨉","÷" };
-        
+
+        foreach (Match m in Regex.Matches(screenValue,defaultPattern))
+        {
+            if (!m.Groups[1].Success || !m.Groups[2].Success || !m.Groups[3].Success) continue;
+            
+            var value1 = decimal.Parse(m.Groups[1].Value);
+            var value2 = decimal.Parse(m.Groups[3].Value);
+            
+            finalResult = m.Groups[2].Value switch
+            {
+                "⨉" => PerformMultiplication(value1, value2),
+                "+" => PerformAddition(value1, value2),
+                "÷" => PerformDivision(value1, value2),
+                "-" => PerformSubtraction(value1, value2),
+                _ => finalResult
+            };
+
+            return new ScreenContentModel()
+            {
+                ValidExpression = true,
+                Value = finalResult
+            };
+        }
+
         if (operators.Any(screenValue.EndsWith))
-            return screenResult;
+            return new ScreenContentModel()
+            {
+               Value = screenResult,
+               ValidExpression = false
+            };
         {
             foreach (Match m in Regex.Matches(screenValue,secondaryPattern))
             {
                 if (!m.Groups[1].Success || !m.Groups[2].Success) 
                     continue;
+                
+                
                 
                 var value = decimal.Parse(m.Groups[2].Value);
                 
@@ -98,7 +136,11 @@ public  static class CalculatorService
         }
 
 
-        return finalResult;
+        return new ScreenContentModel()
+        {
+            Value = finalResult,
+            ValidExpression = true,
+        };
     }
     
 }

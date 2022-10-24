@@ -11,6 +11,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CalculatorScreenValueContainer>();
 builder.Services.AddScoped<CalculationAnswerContainer>();
 builder.Services.AddScoped<CalculationDoneBeforeContainer>();
+builder.Services.AddScoped<ScreenValueToBeCalculatedContainer>();
+builder.Services.AddScoped<CalculationHistoryContainer>();
 builder.Services.AddFluxor(o =>
 
 {

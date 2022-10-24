@@ -1,9 +1,13 @@
 ﻿@using OnlineCalculator.Extensions
 @using System.Globalization
+@using System.Text.RegularExpressions
+@using OnlineCalculator.Model
 @implements IDisposable
 @inject CalculatorScreenValueContainer CalculatorScreenValueContainer
 @inject CalculationAnswerContainer CalculationAnswerContainer
 @inject CalculationDoneBeforeContainer CalculationDoneBeforeContainer
+@inject ScreenValueToBeCalculatedContainer ScreenValueToBeCalculatedContainer
+@inject CalculationHistoryContainer CalculationHistoryContainer
 
 <div class="w-1/4 border-r border-b border-indigo-400">
     <button  @onclick="() => ChangeScreenValue(Content)" class="w-full h-16 outline-none focus:outline-none hover:bg-indigo-700 hover:bg-opacity-20 text-white text-xl font-light">@Content</button>
@@ -14,30 +18,50 @@
     [Parameter]
     public string? Content { get; set; }
 
-    
+    public List<decimal> SuccessiveResults { get; set; } = new();
+
     protected override void OnInitialized()
     {
         CalculatorScreenValueContainer.OnChange += StateHasChanged;
+        CalculationAnswerContainer.OnChange += StateHasChanged;
+        CalculationDoneBeforeContainer.OnChange += StateHasChanged;
+        CalculationHistoryContainer.OnAddNewItem += StateHasChanged;
     }
 
     private void ChangeScreenValue(string content)
     {
         
         CalculatorScreenValueContainer.Property += content;
+
+        ScreenValueToBeCalculatedContainer.Property = content;
+        
         
         if (string.IsNullOrEmpty(CalculationAnswerContainer.Property) && !CalculationDoneBeforeContainer.Property)
         {
 
             var response = CalculatorScreenValueContainer.Property.GetAnswer();
+
+            if (response.Value is null) 
+                return;
             
-            if (response is not null)
-            {
-                CalculationAnswerContainer.Property = response.ToString();
-            }
+            CalculationAnswerContainer.Property = response.Value.ToString();
+            
+            CalculationHistoryContainer.Property.Add((decimal)response.Value);
+                
         }
         else
         {
-            CalculationAnswerContainer.Property = CalculatorScreenValueContainer.Property.GetSuccessiveAnswers(decimal.Parse(CalculationAnswerContainer.Property)).ToString();
+
+
+            var response = CalculatorScreenValueContainer.Property.GetSuccessiveAnswers(decimal.Parse(CalculationAnswerContainer.Property), CalculationHistoryContainer.Property);
+
+            if (response.ValidExpression && response.Value is not null)
+            {
+                 CalculationHistoryContainer.Property.Add((decimal)response.Value);
+            }
+           
+            
+            CalculationAnswerContainer.Property = response.Value.ToString();
         }
         
     }
@@ -45,5 +69,10 @@
     public void Dispose()
     {
         CalculatorScreenValueContainer.OnChange -= StateHasChanged;
+        CalculationAnswerContainer.OnChange -= StateHasChanged;
+        CalculationDoneBeforeContainer.OnChange -= StateHasChanged;
+        CalculationHistoryContainer.OnAddNewItem -= StateHasChanged;
+
+        
     }
 }
