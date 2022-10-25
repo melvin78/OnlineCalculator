@@ -114,7 +114,7 @@ public  static class CalculatorService
             {
                Value = screenResult,
                ValidExpression = false,
-               UpdateCalculationHistory = false,
+               UpdateCalculationHistory = true,
                
               
             };
@@ -123,20 +123,17 @@ public  static class CalculatorService
             {
                 if (!m.Groups[1].Success || !m.Groups[2].Success) 
                     continue;
-                
-                
-                
+
                 var value = decimal.Parse(m.Groups[2].Value);
 
-                var standInResult = successiveResults[expressionCounter];
-                
-                
+                var lastResult = successiveResults.Last();
+
                 finalResult = m.Groups[1].Value switch
                 {
-                    "⨉" => PerformMultiplication(standInResult, value),
-                    "+" => PerformAddition(standInResult, value),
-                    "÷" => PerformDivision(standInResult, value),
-                    "-" => PerformSubtraction(standInResult, value),
+                    "⨉" => PerformMultiplication(lastResult, value),
+                    "+" => PerformAddition(lastResult, value),
+                    "÷" => PerformDivision(lastResult, value),
+                    "-" => PerformSubtraction(lastResult, value),
                     _ => finalResult
                 };
 

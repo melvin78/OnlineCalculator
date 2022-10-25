@@ -7,4 +7,5 @@ public class ScreenContentModel
     public bool ValidExpression { get; set; }
     
     public bool UpdateCalculationHistory { get; set; }
+    
 }

@@ -59,14 +59,16 @@
             {
                 case true when response.Value is not null && response.UpdateCalculationHistory:
                 
-                    CalculationExpressionCounterContainer.Property += 1;
+                    // CalculationExpressionCounterContainer.Property += 1;
 
                 
                     CalculationHistoryContainer.Property.Add((decimal)response.Value);
                     break;
                     
-                case false:
                     
+                case false when response.UpdateCalculationHistory && response.Value is not null:
+                    
+                    CalculationHistoryContainer.Property.Add((decimal)response.Value);
                     // CalculationExpressionCounterContainer.Property += 1;
 
                     break;
