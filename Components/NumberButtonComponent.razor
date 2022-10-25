@@ -6,7 +6,6 @@
 @inject CalculatorScreenValueContainer CalculatorScreenValueContainer
 @inject CalculationAnswerContainer CalculationAnswerContainer
 @inject CalculationDoneBeforeContainer CalculationDoneBeforeContainer
-@inject ScreenValueToBeCalculatedContainer ScreenValueToBeCalculatedContainer
 @inject CalculationHistoryContainer CalculationHistoryContainer
 
 <div class="w-1/4 border-r border-b border-indigo-400">
@@ -30,7 +29,6 @@
     {
         CalculatorScreenValueContainer.Property += content;
 
-        ScreenValueToBeCalculatedContainer.Property = content;
 
 
         if (string.IsNullOrEmpty(CalculationAnswerContainer.Property) && !CalculationDoneBeforeContainer.Property)

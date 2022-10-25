@@ -1,8 +1,9 @@
 ﻿@using OnlineCalculator.Extensions
 @using OnlineCalculator.Constants
-@implements IDisposable
 @inject CalculatorScreenValueContainer CalculatorScreenValueContainer
 @inject CalculationAnswerContainer CalculationAnswerContainer
+@inject CalculationDoneBeforeContainer CalculationDoneBeforeContainer
+@inject CalculationHistoryContainer CalculationHistoryContainer
 
 <div class="w-1/4 border-r border-b border-indigo-400">
     <button  @onclick="() => ChangeScreenValue(Content)" class="w-full h-16 outline-none focus:outline-none hover:bg-indigo-700 hover:bg-opacity-20 text-white text-opacity-50 text-xl font-light">@Content</button>
@@ -20,17 +21,14 @@
 
     private void ChangeScreenValue(string content)
     {
-
         
 
         if (content == EnumerationUtility.GetEnumDescription(CalculatorComponents.Clear))
         {
             CalculatorScreenValueContainer.Property = string.Empty;
-            CalculationAnswerContainer.Property = "0";
-            var t = CalculatorScreenValueContainer.Property;
-            var y = CalculationAnswerContainer.Property;
-            var x = t;
-            var z = y;
+            CalculationAnswerContainer.Property = string.Empty;
+            CalculationDoneBeforeContainer.Property = false;
+            CalculationHistoryContainer.Property.Clear();
         }
         else{
             CalculatorScreenValueContainer.Property += content;
