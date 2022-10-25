@@ -1,6 +1,3 @@
-using Fluxor;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using OnlineCalculator.State.MainScreen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,15 +10,7 @@ builder.Services.AddScoped<CalculationAnswerContainer>();
 builder.Services.AddScoped<CalculationDoneBeforeContainer>();
 builder.Services.AddScoped<ScreenValueToBeCalculatedContainer>();
 builder.Services.AddScoped<CalculationHistoryContainer>();
-builder.Services.AddScoped<CalculationExpressionCounterContainer>();
-builder.Services.AddFluxor(o =>
 
-{
-
-    o.ScanAssemblies(typeof(Program).Assembly);
-    
-
-});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

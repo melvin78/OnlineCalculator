@@ -1,8 +1,6 @@
-﻿using Fluxor;
-
+﻿
 namespace OnlineCalculator.State.MainScreen;
 
-[FeatureState]
 public class CalculatorScreenValueContainer
 {
     

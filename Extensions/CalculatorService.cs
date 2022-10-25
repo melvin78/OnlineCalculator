@@ -1,58 +1,55 @@
 ﻿using System.Text.RegularExpressions;
 using OnlineCalculator.Constants;
 using OnlineCalculator.Model;
-using OnlineCalculator.State.MainScreen;
 
 namespace OnlineCalculator.Extensions;
 
-public  static class CalculatorService
+public static class CalculatorService
 {
-
     public static decimal PerformAddition(decimal valueOne, decimal valueTwo)
     {
-        return Math.Round(valueOne + valueTwo, (int)RoundPlaces.Default);
+        return Math.Round(valueOne + valueTwo, (int) RoundPlaces.Default);
     }
 
     public static decimal PerformSubtraction(this decimal valueOne, decimal valueTwo)
     {
-        return Math.Round(valueOne - valueTwo,  (int)RoundPlaces.Default);
+        return Math.Round(valueOne - valueTwo, (int) RoundPlaces.Default);
     }
 
     public static decimal PerformMultiplication(this decimal valueOne, decimal valueTwo)
     {
-        return Math.Round(valueOne * valueTwo,  (int)RoundPlaces.Default);
+        return Math.Round(valueOne * valueTwo, (int) RoundPlaces.Default);
     }
 
     public static decimal PerformDivision(this decimal valueOne, decimal valueTwo)
     {
-        return Math.Round(valueOne / valueTwo,  (int)RoundPlaces.Default);
+        return Math.Round(valueOne / valueTwo, (int) RoundPlaces.Default);
     }
 
     public static decimal PerformSquareRoot(this decimal valueOne)
     {
-        return (decimal)Math.Round(Math.Sqrt((double)valueOne), (int) RoundPlaces.Default);
+        return (decimal) Math.Round(Math.Sqrt((double) valueOne), (int) RoundPlaces.Default);
     }
 
     public static decimal PerformExponential(this decimal valueOne)
     {
-        return (decimal)Math.Round(Math.Pow((double)valueOne,2), (int) RoundPlaces.Default);
+        return (decimal) Math.Round(Math.Pow((double) valueOne, 2), (int) RoundPlaces.Default);
     }
 
     public static ScreenContentModel GetAnswer(this string screenValue)
     {
-
         decimal? finalResult = null;
 
         string defaultPattern = @"^([+-]?\d*\.?\d+)+([-+⨉*÷x²])+([+-]?\d+\.?\d*)$";
-        
+
         foreach (Match m in Regex.Matches(screenValue, defaultPattern))
         {
             if (!m.Groups[1].Success || !m.Groups[2].Success || !m.Groups[3].Success)
                 continue;
-            
+
             var value1 = decimal.Parse(m.Groups[1].Value);
             var value2 = decimal.Parse(m.Groups[3].Value);
-            
+
             finalResult = m.Groups[2].Value switch
             {
                 "⨉" => PerformMultiplication(value1, value2),
@@ -61,7 +58,6 @@ public  static class CalculatorService
                 "-" => PerformSubtraction(value1, value2),
                 _ => finalResult
             };
-
         }
 
         return new ScreenContentModel()
@@ -70,28 +66,26 @@ public  static class CalculatorService
             ValidExpression = true,
             UpdateCalculationHistory = true
         };
-
     }
 
 
-    public static ScreenContentModel GetSuccessiveAnswers(this string screenValue, decimal screenResult, List<decimal> successiveResults, int expressionCounter)
+    public static ScreenContentModel GetSuccessiveAnswers(this string screenValue, decimal screenResult, List<decimal> successiveResults)
     {
         string secondaryPattern = @".*([-+⨉*÷x²])+([+-]?\d+\.?\d*).*";
-        
+
         string defaultPattern = @"^([+-]?\d*\.?\d+)+([-+⨉*÷x²])+([+-]?\d+\.?\d*)$";
-
-
+        
         decimal finalResult = 0;
 
-        string[] operators =  {"-","+","⨉","÷" };
+        string[] operators = {"-", "+", "⨉", "÷"};
 
-        foreach (Match m in Regex.Matches(screenValue,defaultPattern))
+        foreach (Match m in Regex.Matches(screenValue, defaultPattern))
         {
             if (!m.Groups[1].Success || !m.Groups[2].Success || !m.Groups[3].Success) continue;
-            
+
             var value1 = decimal.Parse(m.Groups[1].Value);
             var value2 = decimal.Parse(m.Groups[3].Value);
-            
+
             finalResult = m.Groups[2].Value switch
             {
                 "⨉" => PerformMultiplication(value1, value2),
@@ -112,16 +106,14 @@ public  static class CalculatorService
         if (operators.Any(screenValue.EndsWith))
             return new ScreenContentModel()
             {
-               Value = screenResult,
-               ValidExpression = false,
-               UpdateCalculationHistory = true,
-               
-              
+                Value = screenResult,
+                ValidExpression = false,
+                UpdateCalculationHistory = true,
             };
         {
-            foreach (Match m in Regex.Matches(screenValue,secondaryPattern))
+            foreach (Match m in Regex.Matches(screenValue, secondaryPattern))
             {
-                if (!m.Groups[1].Success || !m.Groups[2].Success) 
+                if (!m.Groups[1].Success || !m.Groups[2].Success)
                     continue;
 
                 var value = decimal.Parse(m.Groups[2].Value);
@@ -136,7 +128,6 @@ public  static class CalculatorService
                     "-" => PerformSubtraction(lastResult, value),
                     _ => finalResult
                 };
-
             }
         }
 
@@ -148,5 +139,4 @@ public  static class CalculatorService
             UpdateCalculationHistory = false,
         };
     }
-    
 }

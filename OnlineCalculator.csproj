@@ -12,9 +12,4 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Fluxor" Version="5.5.0" />
-      <PackageReference Include="Fluxor.Blazor.Web" Version="5.5.0" />
-    </ItemGroup>
-
 </Project>

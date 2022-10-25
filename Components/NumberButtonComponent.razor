@@ -8,17 +8,16 @@
 @inject CalculationDoneBeforeContainer CalculationDoneBeforeContainer
 @inject ScreenValueToBeCalculatedContainer ScreenValueToBeCalculatedContainer
 @inject CalculationHistoryContainer CalculationHistoryContainer
-@inject CalculationExpressionCounterContainer CalculationExpressionCounterContainer
 
 <div class="w-1/4 border-r border-b border-indigo-400">
-    <button  @onclick="() => ChangeScreenValue(Content)" class="w-full h-16 outline-none focus:outline-none hover:bg-indigo-700 hover:bg-opacity-20 text-white text-xl font-light">@Content</button>
+    <button @onclick="() => ChangeScreenValue(Content)" class="w-full h-16 outline-none focus:outline-none hover:bg-indigo-700 hover:bg-opacity-20 text-white text-xl font-light">@Content</button>
 </div>
 
 @code {
-    
+
     [Parameter]
     public string? Content { get; set; }
-    
+
     protected override void OnInitialized()
     {
         CalculatorScreenValueContainer.OnChange += StateHasChanged;
@@ -29,47 +28,38 @@
 
     private void ChangeScreenValue(string content)
     {
-        
         CalculatorScreenValueContainer.Property += content;
 
         ScreenValueToBeCalculatedContainer.Property = content;
-        
-        
+
+
         if (string.IsNullOrEmpty(CalculationAnswerContainer.Property) && !CalculationDoneBeforeContainer.Property)
         {
-
             var response = CalculatorScreenValueContainer.Property.GetAnswer();
 
-            if (response.Value is null) 
+            if (response.Value is null)
                 return;
-            
+
             CalculationAnswerContainer.Property = response.Value.ToString();
-            
-            CalculationHistoryContainer.Property.Add((decimal)response.Value);
-                
+
+            CalculationHistoryContainer.Property.Add((decimal) response.Value);
         }
         else
         {
-
-
-
-            var response = CalculatorScreenValueContainer.Property.GetSuccessiveAnswers(decimal.Parse(CalculationAnswerContainer.Property), CalculationHistoryContainer.Property, CalculationExpressionCounterContainer.Property);
+            var response = CalculatorScreenValueContainer.Property.GetSuccessiveAnswers(decimal.Parse(CalculationAnswerContainer.Property), CalculationHistoryContainer.Property);
 
             switch (response.ValidExpression)
             {
                 case true when response.Value is not null && response.UpdateCalculationHistory:
-                
-                    // CalculationExpressionCounterContainer.Property += 1;
 
-                
-                    CalculationHistoryContainer.Property.Add((decimal)response.Value);
+
+                    CalculationHistoryContainer.Property.Add((decimal) response.Value);
                     break;
-                    
-                    
+
+
                 case false when response.UpdateCalculationHistory && response.Value is not null:
-                    
-                    CalculationHistoryContainer.Property.Add((decimal)response.Value);
-                    // CalculationExpressionCounterContainer.Property += 1;
+
+                    CalculationHistoryContainer.Property.Add((decimal) response.Value);
 
                     break;
             }
@@ -77,7 +67,6 @@
 
             CalculationAnswerContainer.Property = response.Value.ToString();
         }
-        
     }
 
     public void Dispose()
@@ -86,7 +75,6 @@
         CalculationAnswerContainer.OnChange -= StateHasChanged;
         CalculationDoneBeforeContainer.OnChange -= StateHasChanged;
         CalculationHistoryContainer.OnAddNewItem -= StateHasChanged;
-
-        
     }
+
 }
