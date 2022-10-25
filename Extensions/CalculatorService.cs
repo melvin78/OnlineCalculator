@@ -67,13 +67,14 @@ public  static class CalculatorService
         return new ScreenContentModel()
         {
             Value = finalResult,
-            ValidExpression = true
+            ValidExpression = true,
+            UpdateCalculationHistory = true
         };
 
     }
 
 
-    public static ScreenContentModel GetSuccessiveAnswers(this string screenValue, decimal screenResult, List<decimal> successiveResults)
+    public static ScreenContentModel GetSuccessiveAnswers(this string screenValue, decimal screenResult, List<decimal> successiveResults, int expressionCounter)
     {
         string secondaryPattern = @".*([-+⨉*÷x²])+([+-]?\d+\.?\d*).*";
         
@@ -103,7 +104,8 @@ public  static class CalculatorService
             return new ScreenContentModel()
             {
                 ValidExpression = true,
-                Value = finalResult
+                UpdateCalculationHistory = true,
+                Value = finalResult,
             };
         }
 
@@ -111,7 +113,10 @@ public  static class CalculatorService
             return new ScreenContentModel()
             {
                Value = screenResult,
-               ValidExpression = false
+               ValidExpression = false,
+               UpdateCalculationHistory = false,
+               
+              
             };
         {
             foreach (Match m in Regex.Matches(screenValue,secondaryPattern))
@@ -122,13 +127,16 @@ public  static class CalculatorService
                 
                 
                 var value = decimal.Parse(m.Groups[2].Value);
+
+                var standInResult = successiveResults[expressionCounter];
+                
                 
                 finalResult = m.Groups[1].Value switch
                 {
-                    "⨉" => PerformMultiplication(screenResult, value),
-                    "+" => PerformAddition(screenResult, value),
-                    "÷" => PerformDivision(screenResult, value),
-                    "-" => PerformSubtraction(screenResult, value),
+                    "⨉" => PerformMultiplication(standInResult, value),
+                    "+" => PerformAddition(standInResult, value),
+                    "÷" => PerformDivision(standInResult, value),
+                    "-" => PerformSubtraction(standInResult, value),
                     _ => finalResult
                 };
 
@@ -140,6 +148,7 @@ public  static class CalculatorService
         {
             Value = finalResult,
             ValidExpression = true,
+            UpdateCalculationHistory = false,
         };
     }
     

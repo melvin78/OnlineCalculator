@@ -13,6 +13,7 @@ builder.Services.AddScoped<CalculationAnswerContainer>();
 builder.Services.AddScoped<CalculationDoneBeforeContainer>();
 builder.Services.AddScoped<ScreenValueToBeCalculatedContainer>();
 builder.Services.AddScoped<CalculationHistoryContainer>();
+builder.Services.AddScoped<CalculationExpressionCounterContainer>();
 builder.Services.AddFluxor(o =>
 
 {

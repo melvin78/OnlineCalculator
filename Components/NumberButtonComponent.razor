@@ -8,6 +8,7 @@
 @inject CalculationDoneBeforeContainer CalculationDoneBeforeContainer
 @inject ScreenValueToBeCalculatedContainer ScreenValueToBeCalculatedContainer
 @inject CalculationHistoryContainer CalculationHistoryContainer
+@inject CalculationExpressionCounterContainer CalculationExpressionCounterContainer
 
 <div class="w-1/4 border-r border-b border-indigo-400">
     <button  @onclick="() => ChangeScreenValue(Content)" class="w-full h-16 outline-none focus:outline-none hover:bg-indigo-700 hover:bg-opacity-20 text-white text-xl font-light">@Content</button>
@@ -17,9 +18,7 @@
     
     [Parameter]
     public string? Content { get; set; }
-
-    public List<decimal> SuccessiveResults { get; set; } = new();
-
+    
     protected override void OnInitialized()
     {
         CalculatorScreenValueContainer.OnChange += StateHasChanged;
@@ -53,14 +52,27 @@
         {
 
 
-            var response = CalculatorScreenValueContainer.Property.GetSuccessiveAnswers(decimal.Parse(CalculationAnswerContainer.Property), CalculationHistoryContainer.Property);
 
-            if (response.ValidExpression && response.Value is not null)
+            var response = CalculatorScreenValueContainer.Property.GetSuccessiveAnswers(decimal.Parse(CalculationAnswerContainer.Property), CalculationHistoryContainer.Property, CalculationExpressionCounterContainer.Property);
+
+            switch (response.ValidExpression)
             {
-                 CalculationHistoryContainer.Property.Add((decimal)response.Value);
+                case true when response.Value is not null && response.UpdateCalculationHistory:
+                
+                    CalculationExpressionCounterContainer.Property += 1;
+
+                
+                    CalculationHistoryContainer.Property.Add((decimal)response.Value);
+                    break;
+                    
+                case false:
+                    
+                    // CalculationExpressionCounterContainer.Property += 1;
+
+                    break;
             }
-           
-            
+
+
             CalculationAnswerContainer.Property = response.Value.ToString();
         }
         
