@@ -23,18 +23,17 @@
 
     private void ChangeScreenValue(string content)
     {
-        CalculatorScreenValueContainer.Property = content;
+       
 
     }
 
     private void ComputeAnswer()
     {
-        if (CalculationAnswerContainer.Property != null) 
-            CalculationAnswerContainer.Property = CalculatorScreenValueContainer.Property.GetAnswer().ToString();
+     
     }
 
     public void Dispose()
     {
-        CalculatorScreenValueContainer.OnChange -= StateHasChanged;
+    
     }
 }

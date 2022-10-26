@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using OnlineCalculator.Constants;
 using OnlineCalculator.Model;
 
@@ -40,17 +41,23 @@ public static class CalculatorService
     {
         decimal? finalResult = null;
 
-        string defaultPattern = @"^([+-]?\d*\.?\d+)+([-+⨉*÷x²])+([+-]?\d+\.?\d*)$";
+        string defaultPattern = @"^([+-]?\d*\.?\d+)+([-+⨉*÷x²][-]?)+([+-]?\d+\.?\d*)$";
+
+        var symbol = string.Empty;
 
         foreach (Match m in Regex.Matches(screenValue, defaultPattern))
         {
+
+            var answerShouldBeNegative = m.Groups[2].Value.Contains('-') && m.Groups[2].Value.EndsWith('-');
+            
             if (!m.Groups[1].Success || !m.Groups[2].Success || !m.Groups[3].Success)
                 continue;
 
-            var value1 = decimal.Parse(m.Groups[1].Value);
-            var value2 = decimal.Parse(m.Groups[3].Value);
-
-            finalResult = m.Groups[2].Value switch
+            var value1 = decimal.Parse(m.Groups[1].Value,NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
+            var value2 = decimal.Parse(m.Groups[3].Value,NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
+            symbol = answerShouldBeNegative ? m.Groups[2].Value.First().ToString() : m.Groups[2].Value.Last().ToString();
+            
+            finalResult = symbol switch 
             {
                 "⨉" => PerformMultiplication(value1, value2),
                 "+" => PerformAddition(value1, value2),
@@ -58,8 +65,15 @@ public static class CalculatorService
                 "-" => PerformSubtraction(value1, value2),
                 _ => finalResult
             };
+
+            if (answerShouldBeNegative)
+            {
+                finalResult *= -1;
+            }
         }
 
+       
+        
         return new ScreenContentModel()
         {
             Value = finalResult,
