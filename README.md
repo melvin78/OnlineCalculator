@@ -1,15 +1,13 @@
 <p align="center"><a href="https://price-tracker.webmelvin.me" target="_blank">
-<img src="https://raw.githubusercontent.com/melvin78/ToDoApp/master/ToDoApp/blob/pink.jpg" width="400"></a></p>
+<img src="https://raw.githubusercontent.com/melvin78/OnlineCalculator/master/blob/calc-demo.png" width="400"></a></p>
 
 ## Demo
 
-Check out [here](https://blazor-todo.webmelvin.me)
+Check out [here](https://calculator.webmelvin.me)
 
-## To Do App
+## Calculator App
 
-This is a to do app created without writing a single line of Javascript code.
-With the introduction of web assembly its now possible to use programming languages
-like C#, C++,Rust to write code that will run directly in the browser.
+A c# calculator built using blazor server side architecture. Arithmetic 
 This project uses, [blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) an extension
 to the well known .NET Developer platform and [fluxor](https://github.com/mrpmorris/Fluxor)
 for state management. This is very much similar to react's redux but has been tailored to
