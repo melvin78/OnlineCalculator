@@ -97,8 +97,8 @@ public static class CalculatorService
         {
             if (!m.Groups[1].Success || !m.Groups[2].Success || !m.Groups[3].Success) continue;
 
-            var value1 = decimal.Parse(m.Groups[1].Value);
-            var value2 = decimal.Parse(m.Groups[3].Value);
+            var value1 = decimal.Parse(m.Groups[1].Value,NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
+            var value2 = decimal.Parse(m.Groups[3].Value,NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
 
             finalResult = m.Groups[2].Value switch
             {
@@ -130,7 +130,7 @@ public static class CalculatorService
                 if (!m.Groups[1].Success || !m.Groups[2].Success)
                     continue;
 
-                var value = decimal.Parse(m.Groups[2].Value);
+                var value = decimal.Parse(m.Groups[2].Value,NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
 
                 var lastResult = successiveResults.Last();
 
