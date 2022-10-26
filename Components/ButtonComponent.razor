@@ -30,6 +30,10 @@
             CalculationDoneBeforeContainer.Property = false;
             CalculationHistoryContainer.Property.Clear();
         }
+        else if (string.IsNullOrEmpty(content))
+        {
+            
+        }
         else{
             CalculatorScreenValueContainer.Property += content;
 

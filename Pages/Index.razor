@@ -6,21 +6,21 @@
 @inject CalculationAnswerContainer CalculationAnswerContainer
 @inject CalculationDoneBeforeContainer CalculationDoneBeforeContainer
 
-<PageTitle>Math - Calculator</PageTitle>
+<PageTitle>C# Calculator</PageTitle>
 
 
 
 <div class="min-w-screen min-h-screen bg-gray-100 flex items-center justify-center px-5 py-5">
     <div class="w-full mx-auto rounded-xl bg-gray-100 shadow-xl text-gray-800 relative overflow-hidden" style="max-width:300px">
         <div class="w-full h-40 bg-gradient-to-b from-gray-800 to-gray-700 flex flex-col text-right">
-            <div style="overflow-y: auto; overflow-x: auto; scrollbar-width: thin;" class="w-full py-3 px-6  text-white font-thin break-words">@CalculatorScreenValueContainer.Property</div>
+            <div style="overflow-y: auto; overflow-x: auto; scrollbar-width: thin;" class="w-full py-3 px-6 text-3xl text-white font-thin break-words">@CalculatorScreenValueContainer.Property</div>
             <div class="w-full py-2 px-6 text-3xl text-white font-thin">@CalculationAnswerContainer.Property</div>
         </div>
         <div class="w-full bg-gradient-to-b from-indigo-400 to-indigo-500">
             <div class="flex w-full">
                 <ButtonComponent Content="@EnumerationUtility.GetEnumDescription(CalculatorComponents.Clear)"/>
-                <ButtonComponent Content="@EnumerationUtility.GetEnumDescription(CalculatorComponents.Exponential)"/>
-                <ButtonComponent Content="@EnumerationUtility.GetEnumDescription(CalculatorComponents.SquareRoot)"/>
+                <ButtonComponent />
+                <ButtonComponent/>
                 <ButtonComponent Content="@EnumerationUtility.GetEnumDescription(CalculatorComponents.Division)"/>
             </div>
             <div class="flex w-full">
